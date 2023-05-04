@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include <string.h>
-// #include <mpi.h>
+#include "mpi.h"
 #include <omp.h>
 #include <getopt.h>
 //Implement utility functions:
@@ -16,7 +16,7 @@
 
 #define XWIDTH 256
 #define YWIDTH 256
-#define MAXVAL 65535
+#define MAXVAL 255
 
 
 #if ((0x100 & 0xf) == 0x0)
@@ -179,6 +179,12 @@ void * init_playground(int xsize, int ysize)
     return (void *)image;
 }
 
+void write_snapshot(unsigned char *playground, int maxval, int xsize, int ysize, const char *basename, int iteration)
+{
+    char filename[256];
+    snprintf(filename, sizeof(filename), "%s_%05d.pgm", basename, iteration);
+    write_pgm_image((void *)playground, maxval, xsize, ysize, filename);
+}
 
 
 
@@ -258,15 +264,42 @@ int main ( int argc, char **argv )
     }
   }
 
- 
   if(action==INIT){
     void * ptr = init_playground(k, k);
     write_pgm_image(ptr, 255, k, k, fname);
   }
 
+  if (action==RUN)
+  {
+    if(e == ORDERED){
+       unsigned char *playground_o = (unsigned char *)calloc(k * k * sizeof(unsigned char));
+       read_pgm_image((void **)&playground_o, &MAXVAL, &k, &k, fname);
+         for (int i = 0; i <= n; i += s)
+            {
+                ordered_evolution(playground_o, k, k, s);
+                write_snapshot(playground_o, MAXVAL, k, k, "snapshot", i);
+            }
+       free(playground_o);
+
+    }
+
+    else if(e == STATIC){
+      unsigned char * playground_s = (unsigned char *)calloc(k*k*sizeof(unsigned char));
+       read_pgm_image((void **)&playground_s, &MAXVAL, &k, &k, fname);
+         for (int i = 0; i <= n; i += s)
+            {
+                static_evolution(playground_s, k, k, s);
+                write_snapshot(playground_s, 255, k, k, "snapshot", i);
+            }
+            free(playground_s);
+        }
+    
+    else {
+      printf("Error!");
+    }
+  }
   
-  
-  
+
   if ( fname != NULL )
     free ( fname );
     
@@ -274,390 +307,265 @@ int main ( int argc, char **argv )
 }
 
 
-
-
-
-
-
-void load_playground(unsigned char **playground, int *xsize, int *ysize, const char *filename)
+// counts number of neighbours and updates the state of a single cell
+void update_cell_ordered(unsigned char *playground, int xsize, int ysize, int x, int y)
 {
-    int maxval;
-    void *image;
-
-    read_pgm_image(&image, &maxval, xsize, ysize, filename);
-
-    *playground = (unsigned char *)malloc((*xsize) * (*ysize) * sizeof(unsigned char));
-
-    if (maxval > 255)
+    int alive_neighbors = 0;
+    for (int i = -1; i <= 1; i++)
     {
-        unsigned short int *tmp = (unsigned short int *)image;
-
-        for (int i = 0; i < (*xsize) * (*ysize); i++)
+        for (int j = -1; j <= 1; j++)
         {
-            (*playground)[i] = tmp[i] > 0 ? 1 : 0;
+            if (i == 0 && j == 0)
+                continue;
+
+            int nx = (x + i + xsize) % xsize;
+            int ny = (y + j + ysize) % ysize;
+            alive_neighbors += (playground[ny * xsize + nx]==MAXVAL);
         }
-
-        free(image);
     }
-    else
-    {
-        unsigned char *tmp = (unsigned char *)image;
 
-        for (int i = 0; i < (*xsize) * (*ysize); i++)
+    int cell_index = y * xsize + x;
+    playground[cell_index] = (playground[cell_index] && (alive_neighbors == 2 || alive_neighbors == 3)) || (!playground[cell_index] && alive_neighbors == 3);
+}
+
+void ordered_evolution(unsigned char *playground, int xsize, int ysize, int n)
+{
+    int nthreads;
+    int chunk;
+    int mod;
+    int order;
+
+    #pragma omp parallel
+    {
+        #pragma omp single
         {
-            (*playground)[i] = tmp[i] > 0 ? 1 : 0;
+            nthreads = omp_get_num_threads();
+            chunk = ysize / nthreads;
+            mod = ysize % nthreads;
+        }
+    }
+
+    for (int step = 0; step < n; step++)
+    {
+        order = 0;
+        #pragma omp parallel
+        {
+            int me = omp_get_thread_num();
+            int done = 0;
+            int my_first = chunk * me + ((me < mod) ? me : mod);
+            int my_chunk = chunk + (mod > 0) * (me < mod);
+
+            while (!done)
+            {
+                #pragma omp critical
+                {
+                    if (order == me)
+                    {
+                        for (int y = my_first; y < my_first + my_chunk; y++)
+                        {
+                            for (int x = 0; x < xsize; x++)
+                            {
+                                update_cell_ordered(playground, xsize, ysize, x, y);
+                            }
+                        }
+                        order++;
+                        done = 1;
+                    }
+                }
+            }
         }
     }
 }
 
-void save_playground(unsigned char *playground, int xsize, int ysize, const char *filename)
+
+
+void update_cell_static(unsigned char *top_row, unsigned char *bottom_row,
+ unsigned char *local_playground, unsigned char *updated_playground, int xsize, int ysize, int x, int y)
 {
-    void *image;
-    int maxval = 255;
-
-    image = (unsigned char *)malloc(xsize * ysize * sizeof(unsigned char));
-
-    for (int i = 0; i < xsize * ysize; i++)
+    int alive_neighbors = 0;
+    for (int i = -1; i <= 1; i++)
     {
-        ((unsigned char *)image)[i] = playground[i] ? maxval : 0;
+        for (int j = -1; j <= 1; j++)
+        {
+            if (i == 0 && j == 0)
+                continue;
+
+            int nx = (x + i + xsize) % xsize;
+            int ny = (y + j + ysize) % ysize;
+
+            unsigned char cell_value;
+
+            if (ny == -1)
+            {
+                cell_value = top_row[nx];
+            }
+            else if (ny == ysize)
+            {
+                cell_value = bottom_row[nx];
+            }
+            else
+            {
+                cell_value = local_playground[ny * xsize + nx];
+            }
+
+            alive_neighbors += (cell_value == MAXVAL);
+        }
     }
 
-    write_pgm_image(image, maxval, xsize, ysize, filename);
-
-    free(image);
+    int cell_index = y * xsize + x;
+    updated_playground[cell_index] = (((local_playground[cell_index]==MAXVAL) &&
+     (alive_neighbors == 2 || alive_neighbors == 3)) || 
+     ((local_playground[cell_index]==0) && alive_neighbors == 3)) ? MAXVAL : 0;
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+STATIC EVOLUTION ALGORITHM:
+  1) Initialize MPI and get the rank (process ID)
+   and the number of processes.
+  2) Determine the chunk size for each process by 
+  dividing the y dimension of the playground 
+  by the number of processes. 
+  Also, determine if there is any remainder.
+  3) Calculate the starting y position for each 
+  process based on its rank, chunk size, 
+  and the remainder from step 2.
+  4) For each iteration from 0 to n:
+    a. Create a local copy of the playground 
+    for each process.
+    b. Use OpenMP parallelization 
+    within each process to update the
+     cells in the local playground.
+    c. Use MPI communication to 
+    exchange the necessary border rows 
+    between neighboring processes to ensure 
+    that each process has the correct information 
+    about its neighbors for the next iteration.
+    d. Update the main playground with the 
+    local playgrounds from each process.
+    Finalize MPI.
+
+    The root process (usually the one with rank 0)
+     will have the whole playground initially, 
+     but it will distribute the data among other processes 
+     during the MPI_Scatterv operation. After this step, 
+     each process will only hold its portion of the playground. 
+     At the end of the computation, the root process will gather 
+    the results from all other processes using MPI_Gatherv, 
+    reconstructing the whole playground with the updated cell states.
+
+*/
+
+
+void static_evolution(unsigned char *playground, int xsize, int ysize, int n)
+{
+    int rank, size;
+    MPI_Init(NULL, NULL);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank); //get the rank of the current process
+    MPI_Comm_size(MPI_COMM_WORLD, &size); //get the total number of processes
+
+    int chunk = ysize / size;
+    int mod = ysize % size; // extra rows to evenly distribute to the first mod processes
+    int my_chunk = chunk + (rank < mod); // the first processes will get an extra row each
+    int my_first = rank * chunk + (rank < mod ? rank : mod); //calculate the starting row index for the current process
+    int my_last = my_first + my_chunk; //Calculate the ending row index for the current process (DELETABLE)
+    int local_size = my_chunk * xsize; 
+
+    unsigned char *local_playground = (unsigned char *)malloc(local_size * sizeof(unsigned char));
+    
+    int *sendcounts = NULL; //array of integers containing how many bytes are to be sent to each process,
+    //the index of the array identifies the rank of the process
+    
+    int *displs = NULL; //it will indicate the starting position on the playground of the chunk assigned
+    //to the process
+
+    if (rank == 0)
+    {
+        sendcounts = (int *)malloc(size * sizeof(int));
+        displs = (int *)malloc(size * sizeof(int));
+        for (int i = 0; i < size; i++)
+        {
+            sendcounts[i] = (chunk + (i < mod)) * xsize;
+            displs[i] = i * chunk * xsize + (i < mod ? i : mod) * xsize;
+        }
+    }
+    // integer array (of length group size).
+    // Entry i specifies the displacement 
+    // (relative to sendbuf from which to take the outgoing data to process i)
+
+    MPI_Scatterv(playground, sendcounts, displs, MPI_UNSIGNED_CHAR, local_playground, 
+    local_size, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
+
+    if (rank == 0)
+    {
+        free(sendcounts);
+        free(displs);
+    }
+
+    for (int step = 0; step < n; step++)
+    {
+        unsigned char *top_ghost_row = (unsigned char *)malloc(xsize * sizeof(unsigned char));
+        unsigned char *bottom_ghost_row = (unsigned char *)malloc(xsize * sizeof(unsigned char));
+
+
+       unsigned char *updated_playground = (unsigned char *)malloc(local_size * sizeof(unsigned char));
+
+
+        int top_neighbor = (rank - 1 + size) % size;
+        int bottom_neighbor = (rank + 1) % size;
+        
+        
+        
+       // Each process sends its top row to its top neighbor and receives its bottom ghost row
+       // from its bottom neighbor
+        MPI_Sendrecv(&local_playground[0], xsize, MPI_UNSIGNED_CHAR, top_neighbor, 0,
+                     bottom_ghost_row, xsize, MPI_UNSIGNED_CHAR, bottom_neighbor, 0, 
+                     MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+
+
+        // Each process sends its bottom row to its bottom neighbor and receives its top ghost row
+        // from its top neighbor. 
+        MPI_Sendrecv(&local_playground[(my_chunk - 1) * xsize], xsize, MPI_UNSIGNED_CHAR, bottom_neighbor, 1,
+                     top_ghost_row, xsize, MPI_UNSIGNED_CHAR, top_neighbor, 
+                     1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+       
+       
+        #pragma omp parallel for collapse(2) 
+        {
+        for (int y = 0; y < my_chunk; y++)
+         {
+            for (int x = 0; x < xsize; x++)
+            {
+                update_cell_static((y == 0 ? top_ghost_row : &local_playground[(y - 1) * xsize]),
+                            (y == my_chunk - 1 ? bottom_ghost_row : &local_playground[(y + 1) * xsize]),
+                            local_playground, updated_playground, xsize, my_chunk, x, y);
+            }
+         }
+        }
+        memcpy(local_playground, updated_playground, local_size * sizeof(unsigned char));
+        free(updated_playground);
+        free(top_ghost_row);
+        free(bottom_ghost_row);
+   }
+
+    MPI_Gatherv(local_playground, local_size, MPI_UNSIGNED_CHAR, playground, 
+    sendcounts, displs, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
+
+    free(local_playground);
+
+    MPI_Finalize();
+}
+
+
+
+/*
+Next steps: evaluate the correctness of the code so far
+;  write down the algorithm used so far; look for improvement;
+test the code on ORFEO.
+*/
 
 
 
