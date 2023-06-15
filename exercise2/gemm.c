@@ -154,7 +154,7 @@ int main(int argc, char** argv)
     #ifdef WRITE_CSV
       FILE* results;
       results = fopen(RESULTS, "a");
-      fprintf(results, "%d,%lf,%lf,%lf,%lf\n", m, elapsed_mean, elapsed_sd, gflops_mean, gflops_sd);
+      fprintf(results, "%lf,%lf,%lf,%lf\n", elapsed_mean, elapsed_sd, gflops_mean, gflops_sd);
       fclose(results);
     #else 
       printf("\n Elapsed time mean: %lf s, standard deviation: %lf s\n", elapsed_mean, elapsed_sd);
@@ -171,11 +171,11 @@ int main(int argc, char** argv)
    #ifdef WRITE_CSV
     FILE* results;
     results = fopen(RESULTS, "a"); 
-    fprintf(results, "%d,%lf,%lf\n", m, elapsed, gflops);
+    fprintf(results, "%lf,%lf\n",  elapsed, gflops);
     fclose(results);
    #else 
     printf ("\n Elapsed time %d.%d s\n\n\n", diff(begin,end).tv_sec, diff(begin,end).tv_nsec );
-    printf("%dx%dx%d\t%lf s\t%lf GFLOPS\n", m, n, k, elapsed, gflops);
+    printf("%dx%d\t%lf s\t%lf GFLOPS\n", n, k, elapsed, gflops);
    #endif
   #endif
 
