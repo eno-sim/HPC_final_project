@@ -1,14 +1,14 @@
 #!/bin/bash
 #SBATCH --no-requeue
 #SBATCH --job-name="ex2"
-#SBATCH -n 64
+#SBATCH -n 12
 #SBATCH -N 1
 #SBATCH --get-user-env
-#SBATCH --partition=EPYC
+#SBATCH --partition=THIN
 #SBATCH --exclusive
 #SBATCH --time=01:30:00
 
-module load architecture/AMD
+module load architecture/Intel
 module load mkl
 module load openBLAS/0.3.21-omp
 export LD_LIBRARY_PATH=/u/dssc/scappi00/myblis/lib:$LD_LIBRARY_PATH
@@ -20,7 +20,7 @@ make cpu loc=$location
 
 
 cd $location
-policy=close
+policy=spread
 arch=EPYC #architecture
 
 export OMP_PLACES=cores
@@ -30,7 +30,7 @@ export OMP_PROC_BIND=$policy
 
 for lib in openblas mkl blis; do
   for prec in float double; do
-    file="${lib}_${prec}.csv"
+    file="${lib}.${prec}.csv"
     echo "arch:,${arch},,," > $file
     echo "library:,${lib^^},,," >> $file
     echo "precision:,${prec},,," >> $file

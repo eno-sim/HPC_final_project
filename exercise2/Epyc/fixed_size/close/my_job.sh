@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --no-requeue
 #SBATCH --job-name="ex2"
-#SBATCH -n 64
+#SBATCH -n 128
 #SBATCH -N 1
 #SBATCH --get-user-env
 #SBATCH --partition=EPYC
@@ -18,6 +18,8 @@ location=$(pwd)
 cd ../../..
 make cpu loc=$location
 
+size=10000
+
 
 cd $location
 policy=close
@@ -30,20 +32,23 @@ export OMP_PROC_BIND=$policy
 
 for lib in openblas mkl blis; do
   for prec in float double; do
-    file="${lib}_${prec}.csv"
+    file="${lib}.${prec}.csv"
     echo "arch:,${arch},,," > $file
+    echo "size:,${size},,," >> $file
     echo "library:,${lib^^},,," >> $file
     echo "precision:,${prec},,," >> $file
     echo "policy:,${policy},,," >> $file
     echo ",,,," >> $file
-    echo "matrix_size,time_mean(s),time_sd,GFLOPS_mean,GFLOPS_sd" >> $file
+    echo "#cores,time_mean(s),time_sd,GFLOPS_mean,GFLOPS_sd" >> $file
   done
 done
 
-for i in {1..18}; do
-  let size=$((2000+1000*$i))
+for cores in ${seq 1 1 128}
+do
+  export OMP_NUM_THREADS=$cores
   for lib in openblas mkl blis; do
     for prec in float double; do
+      echo -n "${cores}," >> ${lib}_${prec}.csv
       ./${lib}_${prec}.x $size $size $size
     done
   done

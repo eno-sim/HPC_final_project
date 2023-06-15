@@ -1,0 +1,6 @@
+arch:,EPYC,,,
+library:,MKL,,,
+precision:,float,,,
+policy:,close,,,
+,,,,
+matrix_size,time_mean(s),time_sd,GFLOPS_mean,GFLOPS_sd
