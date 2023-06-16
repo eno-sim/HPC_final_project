@@ -6,7 +6,7 @@
 #SBATCH --get-user-env
 #SBATCH --partition=EPYC
 #SBATCH --exclusive
-#SBATCH --time=01:30:00
+#SBATCH --time=02:00:00
 
 module load architecture/AMD
 module load mkl
@@ -16,6 +16,7 @@ export LD_LIBRARY_PATH=/u/dssc/scappi00/myblis/lib:$LD_LIBRARY_PATH
 location=$(pwd)
 
 cd ../../..
+make clean loc=$location
 make cpu loc=$location
 
 size=10000
@@ -32,7 +33,7 @@ export OMP_PROC_BIND=$policy
 
 for lib in openblas mkl blis; do
   for prec in float double; do
-    file="${lib}.${prec}.csv"
+    file="${lib}_${prec}.csv"
     echo "arch:,${arch},,," > $file
     echo "size:,${size},,," >> $file
     echo "library:,${lib^^},,," >> $file
@@ -43,7 +44,16 @@ for lib in openblas mkl blis; do
   done
 done
 
-for cores in ${seq 1 1 128}
+export OMP_NUM_THREADS=1
+  for lib in openblas mkl blis; do
+    for prec in float double; do
+      echo -n "1," >> ${lib}_${prec}.csv
+      ./${lib}_${prec}.x $size $size $size
+    done
+  done
+
+
+for cores in $(seq 2 2 128)
 do
   export OMP_NUM_THREADS=$cores
   for lib in openblas mkl blis; do
