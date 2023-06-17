@@ -1,37 +1,40 @@
 #!/bin/bash
 #SBATCH --no-requeue
 #SBATCH --job-name="ex2"
-#SBATCH -n 64
+#SBATCH -n 12
 #SBATCH -N 1
 #SBATCH --get-user-env
-#SBATCH --partition=EPYC
+#SBATCH --partition=THIN
 #SBATCH --exclusive
-#SBATCH --time=01:30:00
+#SBATCH --time=02:00:00
 
-module load architecture/AMD
+module load architecture/Intel
 module load mkl
 module load openBLAS/0.3.21-omp
-export LD_LIBRARY_PATH=/u/dssc/scappi00/myblis/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/u/dssc/scappi00/myblis2/lib:$LD_LIBRARY_PATH
 
 location=$(pwd)
 
 cd ../../..
+make clean loc=$location
 make cpu loc=$location
 
 
 cd $location
 policy=close
-arch=EPYC #architecture
+arch=THIN #architecture
 
 export OMP_PLACES=cores
 export OMP_PROC_BIND=$policy
-# export OMP_PROC_BIND=spread
+export OMP_NUM_THREADS=12
+export BLIS_NUM_THREADS=12
 
 
 for lib in openblas mkl blis; do
   for prec in float double; do
-    file="${lib}.${prec}.csv"
+    file="${lib}_${prec}.csv"
     echo "arch:,${arch},,," > $file
+    echo "cores:,12,,," > $file
     echo "library:,${lib^^},,," >> $file
     echo "precision:,${prec},,," >> $file
     echo "policy:,${policy},,," >> $file
@@ -40,10 +43,11 @@ for lib in openblas mkl blis; do
   done
 done
 
-for i in {1..18}; do
+for i in {0..18}; do
   let size=$((2000+1000*$i))
   for lib in openblas mkl blis; do
     for prec in float double; do
+      echo -n "${size}," >> ${lib}_${prec}.csv
       ./${lib}_${prec}.x $size $size $size
     done
   done
