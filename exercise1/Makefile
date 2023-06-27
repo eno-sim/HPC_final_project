@@ -1,5 +1,5 @@
 CC=mpicc -O3 -fopenmp -march=native -g -Iinclude
-
+loc = $(location)
 OBJDIR=obj
 INCDIR=include
 
@@ -8,9 +8,9 @@ STATIC=$(OBJDIR)/static_evolution.o
 ORDERED=$(OBJDIR)/ordered_evolution.o
 OBJECTS=main.o $(RW) $(STATIC) $(ORDERED)
 
-all: main.x
+all: $(loc)/main.x
 
-main.x: $(OBJECTS)
+$(loc)/main.x: $(OBJECTS)
 	$(CC) -DTIME -lm $(OBJECTS) -o $@
 
 main.o: main.c 
