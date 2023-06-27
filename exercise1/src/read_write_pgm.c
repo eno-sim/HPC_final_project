@@ -7,7 +7,7 @@
 #include <omp.h>
 #include <getopt.h>
 
-
+#define MAXVAL 255
 
 void write_pgm_image( void *image, int maxval, int xsize, int ysize, const char *image_name)
 /*
@@ -250,7 +250,7 @@ void parallel_read_pgm_image(void **image, int *maxval, int *xsize, int *ysize, 
             if ( k < 3 ){
             	   k = getline(&line, &n, image_file);
                    offset += k;
-                   k = sscanf(line, "%d%*c", maxval)
+                   k = sscanf(line, "%d%*c", maxval);
                 }
         }	       
         else {
@@ -260,7 +260,7 @@ void parallel_read_pgm_image(void **image, int *maxval, int *xsize, int *ysize, 
         }
 
         free( line ); 
-        fclose(image_file)  
+        fclose(image_file);  
     }
 
     MPI_Bcast(&offset,1,MPI_INT,0,MPI_COMM_WORLD);
@@ -277,9 +277,9 @@ void parallel_read_pgm_image(void **image, int *maxval, int *xsize, int *ysize, 
     int mod = *ysize % size;
     int my_chunk = chunk + (rank < mod);
     int my_first = rank * chunk + (rank < mod ? rank : mod);
-    int offset += my_first * (*xsize) * color_depth;
+    offset += my_first * (*xsize) * color_depth;
 
-    *image = calloc(my_chunk * (*xsize) * color_depth);
+    *image = malloc(my_chunk * (*xsize) * color_depth);
 
     MPI_File fh;
     MPI_Status status;
