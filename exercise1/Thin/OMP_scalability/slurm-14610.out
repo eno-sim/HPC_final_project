@@ -1,0 +1,20 @@
+mpicc -O3 -fopenmp -march=native -g -Iinclude -DTIME -c main.c
+main.c: In function ‘main’:
+main.c:225:1: error: expected declaration or statement at end of input
+  225 | }
+      | ^
+make: *** [Makefile:17: main.o] Error 1
+--------------------------------------------------------------------------
+mpirun was unable to find the specified executable file, and therefore
+did not launch the job.  This error was first reported for process
+rank 0; it may have occurred for other processes as well.
+
+NOTE: A common cause for this error is misspelling a mpirun command
+      line parameter option (remember that mpirun interprets the first
+      unrecognized command line token as the executable).
+
+Node:       epyc002
+Executable: main.x
+--------------------------------------------------------------------------
+2 total processes failed to start
+/var/spool/slurm/d/job14610/slurm_script: line 47: syntax error: unexpected end of file

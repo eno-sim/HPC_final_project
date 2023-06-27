@@ -7,6 +7,10 @@
 #include <omp.h>
 #include <getopt.h>
 #include <math.h>
+#include "ordered_evolution.h"
+#include "read_write_pgm.h"
+#include "static_evolution.h"
+
 //Implement utility functions:
 //You'll need to implement utility functions such as init_playground,
 // load_playground, save_playground,
@@ -106,8 +110,9 @@ int main ( int argc, char **argv )
   if (action==RUN)
   {
     if(e == ORDERED){
-       unsigned char *playground_o = (unsigned char *)calloc(k * k * sizeof(unsigned char));
-       read_pgm_image((void **)&playground_o, &MAXVAL, &k, &k, fname);
+       int num = MAXVAL;
+       unsigned char *playground_o = (unsigned char *)calloc(k * k,  sizeof(unsigned char));
+       read_pgm_image((void **)&playground_o, &num, &k, &k, fname);
          
        if(s>0){  
          for (int i = 1; i <= n; i += s)
@@ -151,14 +156,11 @@ int main ( int argc, char **argv )
         fprintf(fp, "%f,%f\n", mean, std_dev);
         fclose(fp);
        }
-       else {
-          printf("Error!");
-       }
-    }
 
     else if(e == STATIC){
+      int num = MAXVAL;
       unsigned char * playground_s = (unsigned char *)malloc(k*k*sizeof(unsigned char));
-      read_pgm_image((void **)&playground_s, &MAXVAL, &k, &k, fname);
+      read_pgm_image((void **)&playground_s, &num, &k, &k, fname);
 
 
 
@@ -220,7 +222,7 @@ int main ( int argc, char **argv )
     
   return 0;
 }
-
+}
 
 // counts number of neighbours and updates the state of a single cell
 
