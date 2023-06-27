@@ -47,8 +47,7 @@ int   s      = 1;      // every how many steps a dump of the system is saved on 
 char *fname  = NULL;  // name of the file to be either read or written
 
 
-int main ( int argc, char **argv )
-{
+int main ( int argc, char **argv ) {
   /*Each character in the optstring represents a single-character
     option that the program accepts. If a character is followed by a colon (:),
     it indicates that the option requires an argument.
@@ -155,7 +154,7 @@ int main ( int argc, char **argv )
         FILE *fp = fopen("timing.csv", "a");
         fprintf(fp, "%f,%f\n", mean, std_dev);
         fclose(fp);
-       }
+       }}
 
     else if(e == STATIC){
       int num = MAXVAL;
@@ -217,12 +216,13 @@ int main ( int argc, char **argv )
   }
   
 
-  if ( fname != NULL )
+  if ( fname != NULL ){
     free ( fname );
     
-  return 0;
-}
-}
+  return 0; }
+  }
+  }
+
 
 // counts number of neighbours and updates the state of a single cell
 
