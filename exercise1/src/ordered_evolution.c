@@ -36,7 +36,7 @@ void update_cell_ordered(unsigned char *playground, int xsize, int ysize, int x,
     playground[cell_index] = (playground[cell_index] && (alive_neighbors == 2 || alive_neighbors == 3)) || (!playground[cell_index] && alive_neighbors == 3);
 }
 
-void ordered_evolution(unsigned char *playground, int xsize, int ysize, int n)
+void ordered_evolution(unsigned char *playground, int xsize, int ysize, int n, int s)
 {
     int nthreads;
     int chunk;

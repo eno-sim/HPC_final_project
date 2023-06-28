@@ -25,11 +25,10 @@ processes=2
 
 
 datafile=$loc/timing.csv
-echo "threads_per_socket, ordered_mean, ordered_sd, static_mean, static_sd" > $datafile
+echo "threads_per_socket, ordered_mean, static_mean" > $datafile
 
 
 ## initialize a playground
-export OMP_NUM_THREADS=12
 mpirun -np $processes --map-by socket main.x -i -f "game_of_life.pgm"  -k $ysize
 
 for th_socket in $(seq 1 1 12)

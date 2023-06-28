@@ -105,7 +105,7 @@ STATIC EVOLUTION ALGORITHM:
 */
 
 
-void static_evolution(unsigned char *playground, int xsize, int ysize, int n)
+void static_evolution(unsigned char *playground, int xsize, int ysize, int n, int s)
 {
     int rank, size;
    
@@ -144,7 +144,7 @@ void static_evolution(unsigned char *playground, int xsize, int ysize, int n)
     MPI_Scatterv(playground, sendcounts, displs, MPI_UNSIGNED_CHAR, local_playground, 
     local_size, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
 
-    for (int step = 0; step < n; step++)
+    for (int step = 1; step <= n; step++)
     {
         unsigned char *top_ghost_row = (unsigned char *)malloc(xsize * sizeof(unsigned char));
         unsigned char *bottom_ghost_row = (unsigned char *)malloc(xsize * sizeof(unsigned char));
@@ -193,10 +193,14 @@ void static_evolution(unsigned char *playground, int xsize, int ysize, int n)
         free(updated_playground);
         free(top_ghost_row);
         free(bottom_ghost_row);
-   }
+         if(step % s == 0){
+             MPI_Gatherv(local_playground, local_size, MPI_UNSIGNED_CHAR, playground, 
+                  sendcounts, displs, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
 
-    MPI_Gatherv(local_playground, local_size, MPI_UNSIGNED_CHAR, playground, 
-    sendcounts, displs, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
+             write_snapshot(playground, 255, k, k, "ssnapshot", step);
+            }
+
+   }
 
     if (rank == 0)
     {
@@ -205,6 +209,9 @@ void static_evolution(unsigned char *playground, int xsize, int ysize, int n)
     }
 
     free(local_playground);
+
+   
+
 }
 
 
