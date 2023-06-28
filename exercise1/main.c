@@ -22,16 +22,9 @@
 #define XWIDTH 256
 #define YWIDTH 256
 #define MAXVAL 255
-
-
-
-
-
 #define INIT 1
 #define RUN  2
-
 #define K_DFLT 100
-
 #define ORDERED 0
 #define STATIC  1
 
@@ -106,56 +99,53 @@ int main ( int argc, char **argv ) {
     write_pgm_image(ptr, 255, k, k, fname);
   }
 
+
+
   if (action==RUN)
   {
+    double start_time;
+    double end_time;
+    
     if(e == ORDERED){
        int num = MAXVAL;
        unsigned char *playground_o = (unsigned char *)calloc(k * k,  sizeof(unsigned char));
        read_pgm_image((void **)&playground_o, &num, &k, &k, fname);
          
-       if(s>0){  
+       if(s>0){
+         start_time = omp_get_wtime();  
          for (int i = 1; i <= n; i += s)
             {
                 ordered_evolution(playground_o, k, k, s);
                 write_snapshot(playground_o, MAXVAL, k, k, "osnapshot", i);
             }
+           end_time = omp_get_wtime();
+           time_elapsed = end_time - start_time;
+           mean_time = time_elapsed / n;
+      
          free(playground_o);
        }
-       else if (s==0){
-          double *times = (double *)calloc(n, sizeof(double));
 
-        double start_time = omp_get_wtime();
+       else if (s==0){
+        start_time = omp_get_wtime();
         for (int i = 1; i <= n; i += 1){
             ordered_evolution(playground_o, k, k, 1);
-            times[i - 1] = omp_get_wtime();
         }
         write_snapshot(playground_o, MAXVAL, k, k, "osnapshot", n);
+         end_time = omp_get_wtime();
+         time_elapsed = end_time - start_time;
+         mean_time = time_elapsed / n;
+     
         free(playground_o);
-
-        // Compute the time taken for each iteration
-        for (int i = 0; i < n; i++) {
-            times[i] = (i == 0 ? times[i]-start_time : times[i] - times[i - 1]);
-        }
-        // Compute the mean time per iteration
-        double mean = 0.0;
-        for (int i = 0; i < n; i++) {
-            mean += times[i];
-        }
-        mean /= n;
-
-        // Compute the standard deviation of the time per iteration
-        double std_dev = 0.0;
-        for (int i = 0; i < n; i++) {
-            std_dev += ((times[i] - mean)*(times[i] - mean));
-        }
-        std_dev = sqrt(std_dev / n);
-
         // Write the mean and standard deviation to the CSV file
         FILE *fp = fopen("timing.csv", "a");
-        fprintf(fp, "%f,%f,", mean, std_dev);
+        fprintf(fp, "%f,", mean_time);
         fclose(fp);
-       }}
+       }
+    }
 
+   
+   
+   
     else if(e == STATIC){
       int num = MAXVAL;
       unsigned char * playground_s = (unsigned char *)malloc(k*k*sizeof(unsigned char));
@@ -164,74 +154,41 @@ int main ( int argc, char **argv ) {
 
 
       if(s > 0) {
-         for (int i = 1; i <= n; i += s)
-            {
-                static_evolution(playground_s, k, k, s);
-                write_snapshot(playground_s, 255, k, k, "ssnapshot", i);
+                start_time = omp_get_wtime();  
+                MPI_Init(NULL, NULL);
+                static_evolution(playground_s, k, k, n, s);
+                MPI_Finalize();
+                end_time = omp_get_wtime();
+                time_elapsed = end_time - start_time;
+                mean_time = time_elapsed / n;
             }
-            free(playground_s);
-        }
-
-      
+       
+     
       else if(s==0){
-         double *times = (double *)calloc(n, sizeof(double));
-  
-         double start_time = omp_get_wtime();
-         for (int i = 1; i <= n; i += 1)
-            {
-                static_evolution(playground_s, k, k, 1);
-                times[i - 1] = omp_get_wtime();
-            }
-            write_snapshot(playground_s, 255, k, k, "ssnapshot", n);
-            free(playground_s);
-           // Compute the time taken for each iteration
-        for (int i = 0; i < n; i++) {
-            times[i] = (i == 0 ? times[i]-start_time : times[i] - times[i - 1]);
-        }
-        // Compute the mean time per iteration
-        double mean = 0.0;
-        for (int i = 0; i < n; i++) {
-            mean += times[i];
-        }
-        mean /= n;
-         // Compute the standard deviation of the time per iteration
-        double std_dev = 0.0;
-        for (int i = 0; i < n; i++) {
-            std_dev += ((times[i] - mean)*(times[i] - mean));
-        }
-        std_dev = sqrt(std_dev / n);
-         // Write the mean and standard deviation to the CSV file
-        FILE *fp = fopen("timing.csv", "a");
-        fprintf(fp, "%f,%f\n", mean, std_dev);
-        fclose(fp);
-        
-        
-        }
-
-
-    
-    else {
+                start_time = omp_get_wtime();  
+                MPI_Init(NULL, NULL);
+                static_evolution(playground_s, k, k, n, n);
+                MPI_Finalize();
+                end_time = omp_get_wtime();
+                time_elapsed = end_time - start_time;
+                mean_time = time_elapsed / n;
+       }
+   
+      else {
       printf("Error!");
-    }
+     }
+        free(playground_s);
+        FILE *fp = fopen("timing.csv", "a");
+        fprintf(fp, "%f\n", mean_time);
+        fclose(fp);
   }
   
-
+}
   if ( fname != NULL ){
     free ( fname );
-    
-  return 0; }
   }
-  }
+  return 0; 
 
-
-// counts number of neighbours and updates the state of a single cell
-
-
-/*
-Next steps: evaluate the correctness of the code so far
-;  write down the algorithm used so far; look for improvement;
-test the code on ORFEO.
-*/
-
-
+  
+}  
 

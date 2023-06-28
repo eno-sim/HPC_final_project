@@ -5,6 +5,7 @@
 #include <string.h>
 #include "mpi.h"
 #include <omp.h>
+#include "read_write_pgm.h"
 
 
 #define MAXVAL 255
@@ -197,10 +198,14 @@ void static_evolution(unsigned char *playground, int xsize, int ysize, int n, in
              MPI_Gatherv(local_playground, local_size, MPI_UNSIGNED_CHAR, playground, 
                   sendcounts, displs, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
 
-             write_snapshot(playground, 255, k, k, "ssnapshot", step);
+             write_snapshot(playground, 255, xsize, ysize, "ssnapshot", step);
             }
 
    }
+ if(s != n){
+   MPI_Gatherv(local_playground, local_size, MPI_UNSIGNED_CHAR, playground, 
+sendcounts, displs, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
+ }
 
     if (rank == 0)
     {
@@ -209,8 +214,6 @@ void static_evolution(unsigned char *playground, int xsize, int ysize, int n, in
     }
 
     free(local_playground);
-
-   
 
 }
 
