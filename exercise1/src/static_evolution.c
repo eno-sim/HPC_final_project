@@ -3,11 +3,11 @@
 #include <stdbool.h>
 #include <time.h>
 #include <string.h>
-#include <mpi.h>
+#include "mpi.h"
 #include <omp.h>
 
 
-
+#define MAXVAL 255
 
 
 
@@ -86,7 +86,19 @@ STATIC EVOLUTION ALGORITHM:
      but it will distribute the data among other processes 
      during the MPI_Scatterv operation. After this step, 
      each process will only hold its portion of the playground. 
-     At the end of the computation, the root process will gather 
+ int rank, size;
+    MPI_Init(NULL, NULL);
+   
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank); //get the rank of the current process
+    MPI_Comm_size(MPI_COMM_WORLD, &size); //get the total number of processes
+    printf("MPI initialized, I am process %d", rank);
+      int rank, size;
+    MPI_Init(NULL, NULL);
+   
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank); //get the rank of the current process
+    MPI_Comm_size(MPI_COMM_WORLD, &size); //get the total number of processes
+    printf("MPI initialized, I am process %d", rank);
+        At the end of the computation, the root process will gather 
     the results from all other processes using MPI_Gatherv, 
     reconstructing the whole playground with the updated cell states.
 
@@ -96,17 +108,17 @@ STATIC EVOLUTION ALGORITHM:
 void static_evolution(unsigned char *playground, int xsize, int ysize, int n)
 {
     int rank, size;
-    MPI_Init(NULL, NULL);
+   
     MPI_Comm_rank(MPI_COMM_WORLD, &rank); //get the rank of the current process
     MPI_Comm_size(MPI_COMM_WORLD, &size); //get the total number of processes
-
+    printf("MPI initialized, I am process %d", rank);
     int chunk = ysize / size;
     int mod = ysize % size; // extra rows to evenly distribute to the first mod processes
     int my_chunk = chunk + (rank < mod); // the first processes will get an extra row each
     int my_first = rank * chunk + (rank < mod ? rank : mod); //calculate the starting row index for the current process
     int my_last = my_first + my_chunk; //Calculate the ending row index for the current process (DELETABLE)
     int local_size = my_chunk * xsize; 
-
+    
     unsigned char *local_playground = (unsigned char *)malloc(local_size * sizeof(unsigned char));
     
     int *sendcounts = NULL; //array of integers containing how many bytes are to be sent to each process,
@@ -168,7 +180,6 @@ void static_evolution(unsigned char *playground, int xsize, int ysize, int n)
        
        
         #pragma omp parallel for collapse(2) 
-        {
         for (int y = 0; y < my_chunk; y++)
          {
             for (int x = 0; x < xsize; x++)
@@ -178,7 +189,6 @@ void static_evolution(unsigned char *playground, int xsize, int ysize, int n)
                             local_playground, updated_playground, xsize, my_chunk, x, y);
             }
          }
-        }
         memcpy(local_playground, updated_playground, local_size * sizeof(unsigned char));
         free(updated_playground);
         free(top_ghost_row);
@@ -195,8 +205,6 @@ void static_evolution(unsigned char *playground, int xsize, int ysize, int n)
     }
 
     free(local_playground);
-
-    MPI_Finalize();
 }
 
 

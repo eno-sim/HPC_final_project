@@ -158,27 +158,6 @@ void write_snapshot(unsigned char *playground, int maxval, int xsize, int ysize,
     write_pgm_image((void *)playground, maxval, xsize, ysize, filename);
 }
 
-void * init_playground(int xsize, int ysize)
-{
-    srand(time(NULL));
-
-    // Allocate memory for the image
-    unsigned char *image = (unsigned char *)malloc(xsize * ysize * sizeof(unsigned char));
-
-    // Generate random black-and-white pixel values
-    for (int y = 0; y < ysize; y++)
-    {
-        for (int x = 0; x < xsize; x++)
-        {
-            image[y * xsize + x] = (rand() % 2) * MAXVAL;
-        }
-    }
-
-    // Return the pointer to the allocated memory
-    return (void *)image;
-}
-
-
 
 // we can use OpenMP beacuse we are not writing to files 
 // but just initializing the matrix as an unsigned char one dimensional vector

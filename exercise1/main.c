@@ -117,7 +117,7 @@ int main ( int argc, char **argv ) {
          for (int i = 1; i <= n; i += s)
             {
                 ordered_evolution(playground_o, k, k, s);
-                write_snapshot(playground_o, MAXVAL, k, k, "snapshot", i);
+                write_snapshot(playground_o, MAXVAL, k, k, "osnapshot", i);
             }
          free(playground_o);
        }
@@ -129,7 +129,7 @@ int main ( int argc, char **argv ) {
             ordered_evolution(playground_o, k, k, 1);
             times[i - 1] = omp_get_wtime();
         }
-        write_snapshot(playground_o, MAXVAL, k, k, "snapshot", n);
+        write_snapshot(playground_o, MAXVAL, k, k, "osnapshot", n);
         free(playground_o);
 
         // Compute the time taken for each iteration
@@ -152,7 +152,7 @@ int main ( int argc, char **argv ) {
 
         // Write the mean and standard deviation to the CSV file
         FILE *fp = fopen("timing.csv", "a");
-        fprintf(fp, "%f,%f\n", mean, std_dev);
+        fprintf(fp, "%f,%f,", mean, std_dev);
         fclose(fp);
        }}
 
@@ -167,7 +167,7 @@ int main ( int argc, char **argv ) {
          for (int i = 1; i <= n; i += s)
             {
                 static_evolution(playground_s, k, k, s);
-                write_snapshot(playground_s, 255, k, k, "snapshot", i);
+                write_snapshot(playground_s, 255, k, k, "ssnapshot", i);
             }
             free(playground_s);
         }
@@ -182,7 +182,7 @@ int main ( int argc, char **argv ) {
                 static_evolution(playground_s, k, k, 1);
                 times[i - 1] = omp_get_wtime();
             }
-            write_snapshot(playground_s, 255, k, k, "snapshot", n);
+            write_snapshot(playground_s, 255, k, k, "ssnapshot", n);
             free(playground_s);
            // Compute the time taken for each iteration
         for (int i = 0; i < n; i++) {

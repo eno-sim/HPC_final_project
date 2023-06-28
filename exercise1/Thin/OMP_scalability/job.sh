@@ -30,14 +30,15 @@ echo "threads_per_socket, ordered_mean, ordered_sd, static_mean, static_sd" > $d
 
 ## initialize a playground
 export OMP_NUM_THREADS=12
-mpirun -np $processes --map-by socket main.x -i  -k $ysize
+mpirun -np $processes --map-by socket main.x -i -f "game_of_life.pgm"  -k $ysize
 
 for th_socket in $(seq 1 1 12)
 do
 	export OMP_NUM_THREADS=$th_socket
-	echo -n "${th_socket}" >> $datafile
-	mpirun -np $processes --map-by socket main.x -r -e 0 -n $n -s 1
-	mpirun -np $processes --map-by socket main.x -r -e 1 -n $n -s 1
+	echo -n "${th_socket}," >> $datafile
+	mpirun -np 1 --map-by socket main.x -r -f "game_of_life.pgm" -e 0 -n $n -s 0
+	mpirun -np $processes --map-by socket main.x -r -f "game_of_life.pgm" -e 1 -n $n -s 0
+done
 	
 
 cd ../..

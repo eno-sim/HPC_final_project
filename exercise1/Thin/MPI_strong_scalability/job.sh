@@ -7,7 +7,6 @@
 #SBATCH --exclusive
 #SBATCH --time=02:00:00
 
-module load architecture/Intel
 module load openMPI/4.1.5/gnu/12.2.1 
 policy=close
 export OMP_PLACES=cores

@@ -1,3 +1,21 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <time.h>
+#include <string.h>
+#include "mpi.h"
+#include <omp.h>
+
+#define MAXVAL 255
+
+
+
+
+
+
+
+
+
 void update_cell_ordered(unsigned char *playground, int xsize, int ysize, int x, int y)
 {
     int alive_neighbors = 0;
