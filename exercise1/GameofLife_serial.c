@@ -10,6 +10,8 @@
 // update_cell, ordered_evolution, and static_evolution.
  
 
+ struct timespec ts;
+#define CPU_TIME (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts), (double) ts.tv_sec + (double) ts.tv_nsec * 1e-9)
 
 
 #define XWIDTH 256
@@ -188,9 +190,9 @@ void update_ordered_cell(unsigned char *playground, int xsize, int ysize, int x,
     {
         for (int j = -1; j <= 1; j++)
         {
-            if (i == 0 && j == 0)
+            if (i == 0 && j == 0){
                 continue;
-
+                }
             int nx = (x + i + xsize) % xsize;
             int ny = (y + j + ysize) % ysize;
             alive_neighbors += (playground[ny * xsize + nx]==MAXVAL);
@@ -198,7 +200,7 @@ void update_ordered_cell(unsigned char *playground, int xsize, int ysize, int x,
     }
 
     int cell_index = y * xsize + x;
-    playground[cell_index] = ( ((((playground[cell_index]==255) && (alive_neighbors == 2 || alive_neighbors == 3))) || ((playground[cell_index]==0) && alive_neighbors == 3))  ? 255 : 0);
+    playground[cell_index] =( ( ((playground[cell_index]==255) && (alive_neighbors == 2 || alive_neighbors == 3))  || ((playground[cell_index]==0) && alive_neighbors == 3)) ) ? 255 : 0;
 }
 
 void ordered_evolution(unsigned char *playground, int xsize, int ysize, int n)
@@ -235,8 +237,8 @@ void update_cell_static(const unsigned char *old_playground, unsigned char *new_
     }
 
     int cell_index = y * xsize + x;
-    new_playground[cell_index] = ( ((((old_playground[cell_index]==255) && (alive_neighbors == 2 || alive_neighbors == 3))) || 
-    ((old_playground[cell_index]==0) && alive_neighbors == 3))  ? 255 : 0);
+    new_playground[cell_index] =( ( ((old_playground[cell_index]==255) && (alive_neighbors == 2 || alive_neighbors == 3)) ||  ((old_playground[cell_index]==0) &&
+ alive_neighbors == 3) ) ? 255 : 0);
 }
 
 void static_evolution(unsigned char *playground, int xsize, int ysize, int n)
@@ -352,7 +354,10 @@ int main ( int argc, char **argv )
     if(e == ORDERED){
        unsigned char *playground_o = (unsigned char *)malloc(k * k * sizeof(unsigned char));
        read_pgm_image((void **)&playground_o, &maxval, &k, &k, fname);
+       double t_start = CPU_TIME;
        ordered_evolution(playground_o, k, k, n);
+       double time = CPU_TIME - t_start;
+       printf("elapsed time ordered: %f sec\n\n", time);
        write_pgm_image((void *)playground_o, 255, k, k, "test_dump_ordered.pgm");
        free(playground_o);
 
@@ -360,11 +365,16 @@ int main ( int argc, char **argv )
     else if(e == STATIC){
       unsigned char * playground_s = (unsigned char *)malloc(k*k*sizeof(unsigned char));
        read_pgm_image((void **)&playground_s, &maxval, &k, &k, fname);
+       double t_start = CPU_TIME;
        static_evolution(playground_s, k, k, n);
+       double time = CPU_TIME - t_start;
+       printf("elapsed time static: %f sec\n\n", time);
        write_pgm_image((void *)playground_s, 255, k, k, "test_dump_static.pgm");
        free(playground_s);
 
+
     }
+
     else {
       printf("Error!");
     }
