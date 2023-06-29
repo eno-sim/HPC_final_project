@@ -235,10 +235,12 @@ void update_cell_static(const unsigned char *old_playground, unsigned char *new_
             alive_neighbors += (old_playground[ny * xsize + nx]==MAXVAL);
         }
     }
-
+    
     int cell_index = y * xsize + x;
-    new_playground[cell_index] =( ( ((old_playground[cell_index]==255) && (alive_neighbors == 2 || alive_neighbors == 3)) ||  ((old_playground[cell_index]==0) &&
- alive_neighbors == 3) ) ? 255 : 0);
+    printf("cell coordinates: (%d,%d), value: %d, alive neighbors: %d, ",x, y,old_playground[cell_index], alive_neighbors); 
+    new_playground[cell_index] = ( ((old_playground[cell_index]==255) && (alive_neighbors == 2 || alive_neighbors == 3)) ||  ((old_playground[cell_index]==0) &&
+ alive_neighbors == 3) ) ? 255 : 0;
+    printf("updated playground: %d", new_playground[cell_index]);
 }
 
 void static_evolution(unsigned char *playground, int xsize, int ysize, int n)

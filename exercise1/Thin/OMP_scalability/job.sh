@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --no-requeue
 #SBATCH --job-name="openMP_scal"
-#SBATCH --partition=EPYC
+#SBATCH --partition=THIN
 #SBATCH -N 1
 #SBATCH -n 24
 #SBATCH --exclusive
