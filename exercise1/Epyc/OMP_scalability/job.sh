@@ -7,7 +7,7 @@
 #SBATCH --exclusive
 #SBATCH --time=02:00:00
 
-module load architecture/AMD
+
 module load openMPI/4.1.5/gnu/12.2.1 
 policy=close
 export OMP_PLACES=cores
@@ -18,26 +18,21 @@ cd ../..
 make all location=$loc
 cd $loc
 
-xsize=15000
-ysize=15000
-n=5
 processes=2
 
 
 datafile=$loc/timing.csv
-echo "threads_per_socket, ordered_mean, ordered_sd, static_mean, static_sd" > $datafile
+echo "threads_per_socket, ordered_mean, static_mean" > $datafile
 
 
-## initialize a playground
-export OMP_NUM_THREADS=64
-mpirun -np $processes --map-by socket main.x -i  -k $ysize
 
 for th_socket in $(seq 1 1 64)
 do
 	export OMP_NUM_THREADS=$th_socket
-	echo -n "${th_socket}" >> $datafile
-	mpirun -np $processes --map-by socket main.x -r -e 0 -n $n -s 1
-	mpirun -np $processes --map-by socket main.x -r -e 1 -n $n -s 1
+	echo -n "${th_socket}," >> $datafile
+	mpirun -np $processes --map-by socket main.x -r -f "gol4.pgm" -e 0 -n 1 -s 0 -k 8
+	mpirun -np $processes --map-by socket main.x -r -f "gol4.pgm" -e 1 -n 1 -s 0 -k 8
+done
 	
 
 cd ../..

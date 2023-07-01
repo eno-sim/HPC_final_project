@@ -1,3 +1,4 @@
+#include <sys/time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -17,6 +18,7 @@
 // update_cell, ordered_evolution, and static_evolution.
  
 
+struct timeval start_time, end_time;
 
 
 #define XWIDTH 256
@@ -26,18 +28,9 @@
 #define RUN  2
 #define K_DFLT 100
 #define ORDERED 0
-#define STATIC  1
+#define STATIC 1
 
 
-// char fname_deflt[] = "game_of_life.pgm";
-
-int   action = 0;
-int   k      = K_DFLT;  //size of the squared  playground
-int   e      = ORDERED; //evolution type [0\1]
-int   n      = 10000;  // number of iterations 
-int   s      = 1;      // every how many steps a dump of the system is saved on a file
-                      // 0 meaning only at the end.
-char *fname  = NULL;  // name of the file to be either read or written
 
 
 int main ( int argc, char **argv ) {
@@ -52,6 +45,13 @@ int main ( int argc, char **argv ) {
      Name of the file to be either read or written
      -n: Requires an argument (e.g., -n 10000). Number of steps.
      -s: Requires an argument (e.g., -s 1). Frequency of dump.*/
+ int   action = 0;
+int   k      = K_DFLT;  //size of the squared  playground
+int   e      = ORDERED; //evolution type [0\1]
+int   n      = 10000;  // number of iterations 
+int   s      = 1;      // every how many steps a dump of the system is saved on a file
+                      // 0 meaning only at the end.
+char *fname  = NULL;
   char *optstring = "irk:e:f:n:s:";
 
   int c;
@@ -103,45 +103,71 @@ int main ( int argc, char **argv ) {
 
   if (action==RUN)
   {
-    double start_time;
-    double end_time;
-    
+//    double start_time;
+//    double end_time;
+    double mean_time;
+    double time_elapsed;
+
     if(e == ORDERED){
        int num = MAXVAL;
        unsigned char *playground_o = (unsigned char *)calloc(k * k,  sizeof(unsigned char));
        read_pgm_image((void **)&playground_o, &num, &k, &k, fname);
-         
+        
        if(s>0){
-         start_time = omp_get_wtime();  
-         for (int i = 1; i <= n; i += s)
-            {
-                ordered_evolution(playground_o, k, k, s);
-                write_snapshot(playground_o, MAXVAL, k, k, "osnapshot", i);
-            }
-           end_time = omp_get_wtime();
-           time_elapsed = end_time - start_time;
-           mean_time = time_elapsed / n;
-      
-         free(playground_o);
+        gettimeofday(&start_time, NULL);
+//	start_time = omp_get_wtime();
+        MPI_Init(NULL, NULL);
+        int rank;
+        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+        ordered_evolution_MPI(playground_o, k, k, n, s);
+        MPI_Finalize();
+	gettimeofday(&end_time, NULL);
+
+        double time_elapsed = (end_time.tv_sec - start_time.tv_sec) + 
+                      (end_time.tv_usec - start_time.tv_usec) / 1e6;
+
+
+  //      end_time = omp_get_wtime();
+  //      time_elapsed = end_time - start_time;
+        mean_time = time_elapsed / n;
+        free(playground_o);
+	 if (rank == 0) {
+             FILE *fp = fopen("timing.csv", "a");
+             fprintf(fp, "%f,", mean_time);
+             fclose(fp);
+        }
+
        }
 
        else if (s==0){
-        start_time = omp_get_wtime();
-        for (int i = 1; i <= n; i += 1){
-            ordered_evolution(playground_o, k, k, 1);
-        }
-        write_snapshot(playground_o, MAXVAL, k, k, "osnapshot", n);
-         end_time = omp_get_wtime();
-         time_elapsed = end_time - start_time;
-         mean_time = time_elapsed / n;
-     
+	gettimeofday(&start_time, NULL);
+ //       start_time = omp_get_wtime();
+        MPI_Init(NULL, NULL);
+        int rank;
+        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+        ordered_evolution_MPI(playground_o, k, k, n, n);
+        MPI_Finalize();
+	gettimeofday(&end_time, NULL);
+
+//        end_time = omp_get_wtime();
+//        time_elapsed = end_time - start_time;
+	double time_elapsed = (end_time.tv_sec - start_time.tv_sec) + 
+                      (end_time.tv_usec - start_time.tv_usec) / 1e6;
+
+
+        mean_time = time_elapsed / n;
         free(playground_o);
-        // Write the mean and standard deviation to the CSV file
-        FILE *fp = fopen("timing.csv", "a");
-        fprintf(fp, "%f,", mean_time);
-        fclose(fp);
-       }
-    }
+	if (rank == 0) {
+             FILE *fp = fopen("timing.csv", "a");
+  	     fprintf(fp, "%f,", mean_time);
+   	     fclose(fp);
+	}
+
+      }
+     
+   }
+    
 
    
    
@@ -154,35 +180,70 @@ int main ( int argc, char **argv ) {
 
 
       if(s > 0) {
-                start_time = omp_get_wtime();  
-                MPI_Init(NULL, NULL);
+//                start_time = omp_get_wtime();  
+		gettimeofday(&start_time, NULL);
+        
+
+      		  MPI_Init(NULL, NULL);
+        	  int rank;
+	         MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
                 static_evolution(playground_s, k, k, n, s);
                 MPI_Finalize();
-                end_time = omp_get_wtime();
-                time_elapsed = end_time - start_time;
-                mean_time = time_elapsed / n;
-            }
-       
+		gettimeofday(&end_time, NULL);
+		double time_elapsed = (end_time.tv_sec - start_time.tv_sec) + 
+                      (end_time.tv_usec - start_time.tv_usec) / 1e6;
+
+                 mean_time = time_elapsed / n;
+                 if (rank == 0) {
+                     FILE *fp = fopen("timing.csv", "a");
+                     fprintf(fp, "%f\n", mean_time);
+                     fclose(fp);
+                     free(playground_s);
+                    }
+                }
+
+
+
+//                end_time = omp_get_wtime();
+//                time_elapsed = end_time - start_time;
+//                mean_time = time_elapsed / n;
+                  
      
       else if(s==0){
-                start_time = omp_get_wtime();  
+		gettimeofday(&start_time, NULL);
+//                start_time = omp_get_wtime();  
                 MPI_Init(NULL, NULL);
-                static_evolution(playground_s, k, k, n, n);
+                 int rank;
+	         MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+		 static_evolution(playground_s, k, k, n, n);
                 MPI_Finalize();
-                end_time = omp_get_wtime();
-                time_elapsed = end_time - start_time;
+		gettimeofday(&end_time, NULL);
+
+		double time_elapsed = (end_time.tv_sec - start_time.tv_sec) + 
+                      (end_time.tv_usec - start_time.tv_usec) / 1e6;
+
+//		  end_time = omp_get_wtime();
+//               time_elapsed = end_time - start_time;
                 mean_time = time_elapsed / n;
-       }
+		 if (rank == 0) {
+	             FILE *fp = fopen("timing.csv", "a");
+        	     fprintf(fp, "%f\n", mean_time);
+            	     fclose(fp);
+		     free(playground_s);
+                    }
+		}
+
+              
    
       else {
       printf("Error!");
      }
-        free(playground_s);
-        FILE *fp = fopen("timing.csv", "a");
-        fprintf(fp, "%f\n", mean_time);
-        fclose(fp);
-  }
-  
+    
+    
+      
+   }
 }
   if ( fname != NULL ){
     free ( fname );

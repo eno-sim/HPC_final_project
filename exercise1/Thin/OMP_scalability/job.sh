@@ -18,9 +18,6 @@ cd ../..
 make all location=$loc
 cd $loc
 
-xsize=15000
-ysize=15000
-n=5
 processes=2
 
 
@@ -28,15 +25,13 @@ datafile=$loc/timing.csv
 echo "threads_per_socket, ordered_mean, static_mean" > $datafile
 
 
-## initialize a playground
-mpirun -np $processes --map-by socket main.x -i -f "game_of_life.pgm"  -k $ysize
 
 for th_socket in $(seq 1 1 12)
 do
 	export OMP_NUM_THREADS=$th_socket
 	echo -n "${th_socket}," >> $datafile
-	mpirun -np 1 --map-by socket main.x -r -f "game_of_life.pgm" -e 0 -n $n -s 0
-	mpirun -np $processes --map-by socket main.x -r -f "game_of_life.pgm" -e 1 -n $n -s 0
+	mpirun -np 1 --map-by socket main.x -r -f "gol4.pgm" -e 0 -n 1 -s 0 -k 8
+	mpirun -np $processes --map-by socket main.x -r -f "gol4.pgm" -e 1 -n 1 -s 0 -k 8
 done
 	
 

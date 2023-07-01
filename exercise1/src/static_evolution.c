@@ -180,17 +180,18 @@ void static_evolution(unsigned char *playground, int xsize, int ysize, int n, in
 
        
        
-        #pragma omp parallel for collapse(2) 
-        for (int y = 0; y < my_chunk; y++)
+       #pragma omp parallel for collapse(2) 
+       for (int y = 0; y < my_chunk; y++)
          {
             for (int x = 0; x < xsize; x++)
-            {
-                update_cell_static((y == 0 ? top_ghost_row : &local_playground[(y - 1) * xsize]),
+            {   
+                printf("thread: %d executes (%d, %d) of process %d  \n",omp_get_thread_num(), x, y, rank);
+             	update_cell_static((y == 0 ? top_ghost_row : &local_playground[(y - 1) * xsize]),
                             (y == my_chunk - 1 ? bottom_ghost_row : &local_playground[(y + 1) * xsize]),
                             local_playground, updated_playground, xsize, my_chunk, x, y);
             }
          }
-        memcpy(local_playground, updated_playground, local_size * sizeof(unsigned char));
+ 	memcpy(local_playground, updated_playground, local_size * sizeof(unsigned char));
         free(updated_playground);
         free(top_ghost_row);
         free(bottom_ghost_row);
