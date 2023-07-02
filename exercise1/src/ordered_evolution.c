@@ -222,7 +222,7 @@ void ordered_evolution_MPI(unsigned char *playground, int xsize, int ysize, int 
                         if (order == me) {
                             for (int y = th_my_first; y < th_my_first + th_my_chunk; y++) {
                                 for (int x = 0; x < xsize; x++) {
-                                    update_cell_ordered_MPI(top_ghost_row, bottom_ghost_row, local_playground, xsize, th_my_chunk, x, y);
+                                    update_cell_ordered_MPI(top_ghost_row, bottom_ghost_row, local_playground, xsize, my_chunk, x, y);
                                 }
                             }
                             order++;
@@ -251,8 +251,10 @@ void ordered_evolution_MPI(unsigned char *playground, int xsize, int ysize, int 
             MPI_Gatherv(local_playground, local_size, MPI_UNSIGNED_CHAR, playground, 
                         sendcounts, displs, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
 
-            write_snapshot(playground, 255, xsize, ysize, "osnapshot", step);
-        }
+        if(rank == 0){  
+          write_snapshot(playground, 255, xsize, ysize, "osnapshot", step);
+               }
+	 }
        
         if(rank == size-1 && step != n) {
             mpi_order = 0;
@@ -269,8 +271,10 @@ void ordered_evolution_MPI(unsigned char *playground, int xsize, int ysize, int 
     if(s != n) {
         MPI_Gatherv(local_playground, local_size, MPI_UNSIGNED_CHAR, playground, 
                     sendcounts, displs, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
-	 write_snapshot(playground, 255, xsize, ysize, "osnapshot", n);
-    }
+	 if(rank == 0){
+          write_snapshot(playground, 255, xsize, ysize, "osnapshot", n);
+         }
+      }
 
     if (rank == 0) {
         free(sendcounts);
