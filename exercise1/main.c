@@ -1,3 +1,4 @@
+
 #include <sys/time.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -93,7 +94,19 @@ char *fname  = NULL;
       printf("argument -%c not known\n", c ); break;
     }
   }
+  
 
+// parallel writing tester
+ int num = MAXVAL;
+ unsigned char * playground = (unsigned char *) malloc(k*k*sizeof(unsigned char));
+ read_pgm_image((void **)&playground, &num, &k, &k, fname);
+write_pgm_image(playground, MAXVAL, k, k, "serial.pgm");
+ MPI_Init(NULL, NULL);
+ parallel_write_pgm_image(playground, MAXVAL, k, k, "parallel.pgm");
+ MPI_Finalize();
+
+
+ 
   if(action==INIT){
     void * ptr = init_playground(k, k);
     write_pgm_image(ptr, 255, k, k, fname);
@@ -110,7 +123,7 @@ char *fname  = NULL;
 
     if(e == ORDERED){
        int num = MAXVAL;
-       unsigned char *playground_o = (unsigned char *)calloc(k * k,  sizeof(unsigned char));
+       unsigned char *playground_o = (unsigned char *)malloc(k * k * sizeof(unsigned char));
        read_pgm_image((void **)&playground_o, &num, &k, &k, fname);
         
        if(s>0){

@@ -145,39 +145,40 @@ void static_evolution(unsigned char *playground, int xsize, int ysize, int n, in
     MPI_Scatterv(playground, sendcounts, displs, MPI_UNSIGNED_CHAR, local_playground, 
     local_size, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
 
-    for (int step = 1; step <= n; step++)
-    {
         unsigned char *top_ghost_row = (unsigned char *)malloc(xsize * sizeof(unsigned char));
         unsigned char *bottom_ghost_row = (unsigned char *)malloc(xsize * sizeof(unsigned char));
 
-
        unsigned char *updated_playground = (unsigned char *)malloc(local_size * sizeof(unsigned char));
-
 
         int top_neighbor = (rank - 1 + size) % size; // always rank-1 except for when rank==0, where
         // the result of the modulus is size-1 (the last process in rank order is the top neighbor of process 0)
-        
-        
+
         int bottom_neighbor = (rank + 1) % size; // (rank + 1) / size is always 0, so the modulus will always
         //be rank+1, except for when rank == size-1 (maximum) where the modulus is 0 (process 0 is the bottom 
         //neighbor of the last process)
-        
-        
-        
-       // Each process sends its top row to its top neighbor and receives its bottom ghost row
-       // from its bottom neighbor
-        MPI_Sendrecv(&local_playground[0], xsize, MPI_UNSIGNED_CHAR, top_neighbor, 0,
-                     bottom_ghost_row, xsize, MPI_UNSIGNED_CHAR, bottom_neighbor, 0, 
-                     MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
 
 
-        // Each process sends its bottom row to its bottom neighbor and receives its top ghost row
-        // from its top neighbor. 
-        MPI_Sendrecv(&local_playground[(my_chunk - 1) * xsize], xsize, MPI_UNSIGNED_CHAR, bottom_neighbor, 1,
-                     top_ghost_row, xsize, MPI_UNSIGNED_CHAR, top_neighbor, 
-                     1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
+    for (int step = 1; step <= n; step++)
+    {
+       MPI_Request request[2];
+
+	// Each process sends its top row to its top neighbor
+	MPI_Isend(&local_playground[0], xsize, MPI_UNSIGNED_CHAR, top_neighbor, 0, 
+          MPI_COMM_WORLD, &request[0]);
+
+	// Each process sends its bottom row to its bottom neighbor
+	MPI_Isend(&local_playground[(my_chunk - 1) * xsize], xsize, MPI_UNSIGNED_CHAR, bottom_neighbor, 1,
+          MPI_COMM_WORLD, &request[1]);
+
+	// Each process receives its bottom ghost row from its bottom neighbor
+	MPI_Recv(bottom_ghost_row, xsize, MPI_UNSIGNED_CHAR, bottom_neighbor, 0, 
+         MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+	// Each process receives its top ghost row from its top neighbor
+	MPI_Recv(top_ghost_row, xsize, MPI_UNSIGNED_CHAR, top_neighbor, 
+         1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
        
        
        #pragma omp parallel for collapse(2) 
@@ -191,29 +192,39 @@ void static_evolution(unsigned char *playground, int xsize, int ysize, int n, in
             }
          }
  	memcpy(local_playground, updated_playground, local_size * sizeof(unsigned char));
-        free(updated_playground);
-        free(top_ghost_row);
-        free(bottom_ghost_row);
          if(step % s == 0){
              MPI_Gatherv(local_playground, local_size, MPI_UNSIGNED_CHAR, playground, 
                   sendcounts, displs, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
-
-             write_snapshot(playground, 255, xsize, ysize, "ssnapshot", step);
+            if(rank == 0) {
+                   write_snapshot(playground, 255, xsize, ysize, "ssnapshot", step);
+            	}
             }
 
    }
+
+ free(updated_playground);
+ free(top_ghost_row);
+ free(bottom_ghost_row);
+
+
+
+
+
  if(s != n){
    MPI_Gatherv(local_playground, local_size, MPI_UNSIGNED_CHAR, playground, 
 sendcounts, displs, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
+   if(rank == 0) {
+	write_snapshot(playground, 255, xsize, ysize, "ssnapshot", n);
  }
+}
 
-    if (rank == 0)
+ if (rank == 0)
     {
         free(sendcounts);
         free(displs);
     }
 
-    free(local_playground);
+ free(local_playground);
 
 }
 
