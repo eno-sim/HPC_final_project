@@ -23,13 +23,13 @@ threads=64
 
 
 datafile=$loc/timing.csv
-# echo "size, procs, ordered_mean, static_mean" > $datafile
+echo "size, procs, ordered_mean, static_mean" > $datafile
 
 
 ## initialize a playground
 export OMP_NUM_THREADS=$threads
 
-for size in $(seq 35000 5000 50000)
+for size in $(seq 10000 5000 40000)
 do
 	mpirun -np 4 -N 2 --map-by socket main.x -i -f "game_of_life_${size}.pgm" -k $size
 	for procs in $(seq 1 1 4)

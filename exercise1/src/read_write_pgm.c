@@ -155,7 +155,7 @@ void write_snapshot(unsigned char *playground, int maxval, int xsize, int ysize,
 {
     char filename[256];
     snprintf(filename, sizeof(filename), "%s_%05d.pgm", basename, iteration);
-    write_pgm_image((void *)playground, maxval, xsize, ysize, filename);
+    parallel_write_pgm_image((void *)playground, maxval, xsize, ysize, filename);
 }
 
 
@@ -279,11 +279,8 @@ void parallel_write_pgm_image(void *image, int maxval, int xsize, int ysize, con
     int chunk = ysize / size;
     int mod = ysize % size;
     int my_chunk = chunk + (rank < mod);
-    printf("my_chunk: %d \n", my_chunk);
     int my_first = rank * chunk + (rank < mod ? rank : mod);
     int offset = my_first * xsize * color_depth;
-    printf("my_first: %d \n", my_first);
-   printf("offset: %d \n", offset);
      MPI_File fh;
    
     MPI_Status status;
@@ -307,7 +304,6 @@ void parallel_write_pgm_image(void *image, int maxval, int xsize, int ysize, con
 
     MPI_Barrier(MPI_COMM_WORLD);
 
-    printf("BARRIER SURPASSED BY %d \n", rank);
     err = MPI_File_open(MPI_COMM_WORLD, image_name, MPI_MODE_WRONLY, MPI_INFO_NULL, &fh);
         if (err!=0) {
             printf("Error opening file for writing data: %d\n", err);

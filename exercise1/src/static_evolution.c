@@ -195,9 +195,8 @@ void static_evolution(unsigned char *playground, int xsize, int ysize, int n, in
          if(step % s == 0){
              MPI_Gatherv(local_playground, local_size, MPI_UNSIGNED_CHAR, playground, 
                   sendcounts, displs, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
-            if(rank == 0) {
-                   write_snapshot(playground, 255, xsize, ysize, "ssnapshot", step);
-            	}
+             write_snapshot(playground, 255, xsize, ysize, "ssnapshot", step);
+            	
             }
 
    }
@@ -213,9 +212,8 @@ void static_evolution(unsigned char *playground, int xsize, int ysize, int n, in
  if(s != n){
    MPI_Gatherv(local_playground, local_size, MPI_UNSIGNED_CHAR, playground, 
 sendcounts, displs, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
-   if(rank == 0) {
-	write_snapshot(playground, 255, xsize, ysize, "ssnapshot", n);
- }
+write_snapshot(playground, 255, xsize, ysize, "ssnapshot", n);
+ 
 }
 
  if (rank == 0)

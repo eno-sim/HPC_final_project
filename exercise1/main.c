@@ -96,14 +96,6 @@ char *fname  = NULL;
   }
   
 
-// parallel writing tester
- int num = MAXVAL;
- unsigned char * playground = (unsigned char *) malloc(k*k*sizeof(unsigned char));
- read_pgm_image((void **)&playground, &num, &k, &k, fname);
-write_pgm_image(playground, MAXVAL, k, k, "serial.pgm");
- MPI_Init(NULL, NULL);
- parallel_write_pgm_image(playground, MAXVAL, k, k, "parallel.pgm");
- MPI_Finalize();
 
 
  

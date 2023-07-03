@@ -1,0 +1,1027 @@
+mpicc -O3 -fopenmp -march=native -g -Iinclude -lm main.o obj/read_write_pgm.o obj/static_evolution.o obj/ordered_evolution.o -o /u/dssc/scappi00/HPC_final_project/exercise1/Epyc/OMP_scalability/main.x
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 0I am process 0 of 2, so far so good 
+my_chunk: 10000 
+my_first: 0 
+offset: 0 
+MPI initialized, I am process 1I am process 1 of 2, so far so good 
+my_chunk: 10000 
+my_first: 10000 
+offset: 200000000 
+rm -rf *.x obj/*.o obj/*.a 
+make: *** No rule to make target 'img_clean', needed by 'clean'.  Stop.

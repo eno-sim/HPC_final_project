@@ -22,7 +22,7 @@ processes=2
 
 
 datafile=$loc/timing.csv
-#echo "threads_per_socket, ordered_mean, static_mean" > $datafile
+echo "threads_per_socket, ordered_mean, static_mean" > $datafile
 
 
 
@@ -30,8 +30,8 @@ for th_socket in $(seq 1 1 64)
 do
 	export OMP_NUM_THREADS=$th_socket
 	echo -n "${th_socket}," >> $datafile
-#	mpirun -np 1 --map-by socket main.x -r -f "gol4.pgm" -k 8    #-r -e 0 -n 1 -s 0
-	mpirun -np $processes --map-by socket main.x -f "gol4.pgm" -k 8  # -e 1 -n 1 -s 0 -r
+	mpirun -np $processes --map-by socket main.x -r -f "gol4.pgm" -k 8 -r -e 0 -n 1 -s 0
+	mpirun -np $processes --map-by socket main.x -f "gol4.pgm" -k 8 -e 1 -n 1 -s 0 -r
 done
 	
 

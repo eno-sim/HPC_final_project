@@ -251,9 +251,7 @@ void ordered_evolution_MPI(unsigned char *playground, int xsize, int ysize, int 
             MPI_Gatherv(local_playground, local_size, MPI_UNSIGNED_CHAR, playground, 
                         sendcounts, displs, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
 
-        if(rank == 0){  
-          write_snapshot(playground, 255, xsize, ysize, "osnapshot", step);
-               }
+            write_snapshot(playground, 255, xsize, ysize, "osnapshot", step);
 	 }
        
         if(rank == size-1 && step != n) {
@@ -271,9 +269,7 @@ void ordered_evolution_MPI(unsigned char *playground, int xsize, int ysize, int 
     if(s != n) {
         MPI_Gatherv(local_playground, local_size, MPI_UNSIGNED_CHAR, playground, 
                     sendcounts, displs, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
-	 if(rank == 0){
           write_snapshot(playground, 255, xsize, ysize, "osnapshot", n);
-         }
       }
 
     if (rank == 0) {
