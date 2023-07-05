@@ -112,7 +112,6 @@ void static_evolution(unsigned char *playground, int xsize, int ysize, int n, in
    
     MPI_Comm_rank(MPI_COMM_WORLD, &rank); //get the rank of the current process
     MPI_Comm_size(MPI_COMM_WORLD, &size); //get the total number of processes
-    printf("MPI initialized, I am process %d", rank);
     int chunk = ysize / size;
     int mod = ysize % size; // extra rows to evenly distribute to the first mod processes
     int my_chunk = chunk + (rank < mod); // the first processes will get an extra row each
@@ -122,6 +121,9 @@ void static_evolution(unsigned char *playground, int xsize, int ysize, int n, in
     
     unsigned char *local_playground = (unsigned char *)malloc(local_size * sizeof(unsigned char));
     
+
+//USEFUL ONLY FOR GATHERV
+
     int *sendcounts = NULL; //array of integers containing how many bytes are to be sent to each process,
     //the index of the array identifies the rank of the process
     
@@ -141,9 +143,7 @@ void static_evolution(unsigned char *playground, int xsize, int ysize, int n, in
     // integer array (of length group size).
     // Entry i specifies the displacement 
     // (relative to sendbuf from which to take the outgoing data to process i)
-
-    MPI_Scatterv(playground, sendcounts, displs, MPI_UNSIGNED_CHAR, local_playground, 
-    local_size, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
+      local_playground = &playground[my_first * xsize];
 
         unsigned char *top_ghost_row = (unsigned char *)malloc(xsize * sizeof(unsigned char));
         unsigned char *bottom_ghost_row = (unsigned char *)malloc(xsize * sizeof(unsigned char));
