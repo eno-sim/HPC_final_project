@@ -72,7 +72,6 @@ void static_evolution(unsigned char *local_playground, int xsize, int my_chunk, 
      unsigned char *top_ghost_row = (unsigned char *)malloc(xsize * sizeof(unsigned char));
      unsigned char *bottom_ghost_row = (unsigned char *)malloc(xsize * sizeof(unsigned char));
 
-     unsigned char *updated_playground = (unsigned char *)malloc(local_size);
 
      int top_neighbor = (rank - 1 + size) % size; // always rank-1 except for when rank==0, where
         // the result of the modulus is size-1 (the last process in rank order is the top neighbor of process 0)
@@ -86,6 +85,7 @@ void static_evolution(unsigned char *local_playground, int xsize, int my_chunk, 
 
     for (int step = 1; step <= n; step++)
     {
+	unsigned char *updated_playground = (unsigned char *)malloc(local_size);
        MPI_Request request[2];
 
 	// Each process sends its top row to its top neighbor
@@ -116,15 +116,18 @@ void static_evolution(unsigned char *local_playground, int xsize, int my_chunk, 
             }
          }
  	
-        memcpy(local_playground, updated_playground, local_size * sizeof(unsigned char));
-       
+//        memcpy(local_playground, updated_playground, local_size * sizeof(unsigned char));
+	unsigned char *temp = local_playground;
+	local_playground = updated_playground;
+	updated_playground = temp;
+ 	free(updated_playground); 
+     
         if(step % s == 0){
              par_write_snapshot(local_playground, 255, xsize, my_chunk, "ssnapshot", step, my_offset); //CHECK IT!!!!
             	 }
 
    }
 
- free(updated_playground);
  free(top_ghost_row);
  free(bottom_ghost_row);
 

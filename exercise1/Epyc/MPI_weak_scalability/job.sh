@@ -33,24 +33,29 @@ do
 done
 
 
-echo "10000, 1, " >> $datafile
-mpirun -np 1 -N 3 --map-by socket par_main -r -n 5 -s 0 -f "playground_10000.pgm" -k 10000
+echo "10000,1," >> $datafile
+mpirun -np 1 -N 3 --map-by socket par_main.x -r -e 0 -n 5 -s 0 -f "playground_10000.pgm" -k 10000
+mpirun -np 1 -N 3 --map-by socket par_main.x -r -e 1 -n 50 -s 0 -f "playground_10000.pgm" -k 10000
 
-echo "14143, 2, " >> $datafile
-mpirun -np 2 -N 3 --map-by socket par_main -r -n 5 -s 0 -f "playground_14143.pgm" -k 14143
+echo "14143,2," >> $datafile
+mpirun -np 2 -N 3 --map-by socket par_main.x -r -e 0 -n 5 -s 0 -f "playground_14143.pgm" -k 14143
+mpirun -np 1 -N 3 --map-by socket par_main.x -r -e 1 -n 50 -s 0 -f "playground_10000.pgm" -k 14143
 
-echo "17321, 3, " >> $datafile
-mpirun -np 3 -N 3 --map-by socket par_main -r -n 5 -s 0 -f "playground_17321.pgm" -k 17321
+echo "17321, 3," >> $datafile
+mpirun -np 3 -N 3 --map-by socket par_main.x -r -e 0 -n 5 -s 0 -f "playground_17321.pgm" -k 17321
+mpirun -np 3 -N 3 --map-by socket par_main.x -r -e 1 -n 50 -s 0 -f "playground_17321.pgm" -k 17321
 
-echo "20000, 4, " >> $datafile
-mpirun -np 4 -N 3 --map-by socket par_main -r -n 5 -s 0 -f "playground_20000.pgm" -k 20000
+echo "20000, 4," >> $datafile
+mpirun -np 4 -N 3 --map-by socket par_main.x -r -e 0 -n 5 -s 0 -f "playground_20000.pgm" -k 20000
+mpirun -np 4 -N 3 --map-by socket par_main.x -r -e 1 -n 50 -s 0 -f "playground_20000.pgm" -k 20000
 
-echo "22361, 5, " >> $datafile
-mpirun -np 5 -N 3 --map-by socket par_main -r -n 5 -s 0 -f "playground_22361.pgm" -k 22361
+echo "22361, 5," >> $datafile
+mpirun -np 5 -N 3 --map-by socket par_main.x -r -e 0 -n 5 -s 0 -f "playground_22361.pgm" -k 22361
+mpirun -np 5 -N 3 --map-by socket par_main.x -r -e 1 -n 50 -s 0 -f "playground_22361.pgm" -k 22361
 
-echo "24495, 6, " >> $datafile
-mpirun -np 6 -N 3 --map-by socket par_main -r -n 5 -s 0 -f "playground_24495.pgm" -k 24495
-
+echo "24495, 6," >> $datafile
+mpirun -np 6 -N 3 --map-by socket par_main.x -r -e 0 -n 5 -s 0 -f "playground_24495.pgm" -k 24495
+mpirun -np 6 -N 3 --map-by socket par_main.x -r -e 1 -n 50 -s 0 -f "playground_24495.pgm" -k 24495
 
 
 cd ../..
