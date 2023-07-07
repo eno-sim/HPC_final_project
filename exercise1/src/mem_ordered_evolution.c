@@ -138,11 +138,11 @@ void ordered_evolution(unsigned char *local_playground, int xsize, int my_chunk,
         if(rank != size-1) {
             mpi_order++;
             MPI_Send(&mpi_order, 1, MPI_INT, bottom_neighbor, 0, MPI_COMM_WORLD);
+
             // Send the bottom row as the top ghost row for the next process
             MPI_Send(&local_playground[(my_chunk - 1) * xsize], xsize, MPI_UNSIGNED_CHAR, bottom_neighbor, 4, MPI_COMM_WORLD);
 
 
-           
             MPI_Isend(&local_playground[0], xsize, MPI_UNSIGNED_CHAR, top_neighbor, 5, MPI_COMM_WORLD, &reqs[1]);
 
         } 

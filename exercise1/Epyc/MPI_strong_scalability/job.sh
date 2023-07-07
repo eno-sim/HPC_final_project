@@ -35,7 +35,7 @@ do
 	  echo -n "${size}," >> $datafile
 	  echo -n "${procs},">> $datafile
 	  mpirun -np $procs -N 2 --map-by core par_main.x -r -f "playground_${size}.pgm" -e 0 -n 3 -s 0 -k $size
-	  mpirun -np $procs -N 2 --map-by core par_main.x -r -f "playground_${size}.pgm" -e 1 -n 50 -s 0 -k $size
+	  mpirun -np $procs -N 2 --map-by core par_main.x -r -f "playground_${size}.pgm" -e 1 -n 100 -s 0 -k $size
 done
 #done
 
