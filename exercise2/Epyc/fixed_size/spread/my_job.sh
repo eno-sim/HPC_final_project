@@ -34,13 +34,7 @@ export OMP_PROC_BIND=$policy
 for lib in openblas mkl blis; do
   for prec in float double; do
     file="${lib}_${prec}.csv"
-    echo "arch:,${arch},,," > $file
-    echo "size:,${size},,," >> $file
-    echo "library:,${lib^^},,," >> $file
-    echo "precision:,${prec},,," >> $file
-    echo "policy:,${policy},,," >> $file
-    echo ",,,," >> $file
-    echo "#cores,time_mean(s),time_sd,GFLOPS_mean,GFLOPS_sd" >> $file
+    echo "#cores,time_mean(s),time_sd,GFLOPS_mean,GFLOPS_sd" > $file
   done
 done
 

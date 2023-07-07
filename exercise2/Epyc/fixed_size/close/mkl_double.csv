@@ -1,9 +1,3 @@
-arch:,EPYC,,,
-size:,10000,,,
-library:,MKL,,,
-precision:,double,,,
-policy:,close,,,
-,,,,
 #cores,time_mean(s),time_sd,GFLOPS_mean,GFLOPS_sd
 1,43.043959,0.124923,46.464518,0.134298
 2,21.966375,0.147883,91.052356,0.610087

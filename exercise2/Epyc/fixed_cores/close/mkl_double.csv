@@ -1,8 +1,3 @@
-arch:,EPYC,,,
-library:,MKL,,,
-precision:,double,,,
-policy:,close,,,
-,,,,
 matrix_size,time_mean(s),time_sd,GFLOPS_mean,GFLOPS_sd
 2000,0.026054,0.013363,671.433262,113.179618
 3000,0.060946,0.005347,892.087555,69.591691

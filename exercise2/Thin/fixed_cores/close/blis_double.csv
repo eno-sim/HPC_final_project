@@ -1,8 +1,3 @@
-cores:,12,,,
-library:,BLIS,,,
-precision:,double,,,
-policy:,close,,,
-,,,,
 matrix_size,time_mean(s),time_sd,GFLOPS_mean,GFLOPS_sd
 2000,0.026253,0.002257,613.654864,49.033504
 3000,0.079864,0.001179,676.292583,9.765809

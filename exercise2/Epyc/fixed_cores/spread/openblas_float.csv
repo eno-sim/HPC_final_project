@@ -1,8 +1,3 @@
-arch:,EPYC,,,
-library:,OPENBLAS,,,
-precision:,float,,,
-policy:,spread,,,
-,,,,
 matrix_size,time_mean(s),time_sd,GFLOPS_mean,GFLOPS_sd
 2000,0.024235,0.002618,665.646284,50.531338
 3000,0.069946,0.026555,935.528899,438.283193

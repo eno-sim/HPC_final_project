@@ -21,20 +21,20 @@ threads=1
 
 
 datafile=$loc/timing.csv
-echo "size, procs, ordered_mean, static_mean" > $datafile
-
+#echo "size, procs, ordered_mean, static_mean" > $datafile
+#echo "size, procs, static_mean" > $datafile
 
 ## initialize a playground
 export OMP_NUM_THREADS=$threads
-size=25000
+size=40000
 #for size in 20000 30000
 #do
 mpirun -np 4 -N 2 --map-by socket par_main.x -i -f "playground_${size}.pgm" -k $size
-for procs in 1 $(seq 8 8 256)
+for procs in $(seq 216 8 256)
 do
 	  echo -n "${size}," >> $datafile
 	  echo -n "${procs},">> $datafile
-	  mpirun -np $procs -N 2 --map-by core par_main.x -r -f "playground_${size}.pgm" -e 0 -n 3 -s 0 -k $size
+#	  mpirun -np $procs -N 2 --map-by core par_main.x -r -f "playground_${size}.pgm" -e 0 -n 3 -s 0 -k $size
 	  mpirun -np $procs -N 2 --map-by core par_main.x -r -f "playground_${size}.pgm" -e 1 -n 100 -s 0 -k $size
 done
 #done

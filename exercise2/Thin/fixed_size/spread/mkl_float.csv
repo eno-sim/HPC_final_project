@@ -1,9 +1,3 @@
-arch:,THIN,,,
-size:,10000,,,
-library:,MKL,,,
-precision:,float,,,
-policy:,spread,,,
-,,,,
 #cores,time_mean(s),time_sd,GFLOPS_mean,GFLOPS_sd
 1,15.265367,0.011812,131.015596,0.101262
 1,15.248121,0.012221,131.163790,0.104999
