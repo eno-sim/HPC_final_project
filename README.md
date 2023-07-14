@@ -17,9 +17,9 @@ For details on the contents of `exercise1/` and `exercise2/` directories, as wel
 
 ### Exercise 1
 
-For this exercise, I needed to make a parallel version of Conway's Game of Life ("GOL") and test how well it works when I change the conditions. The assignment asked for a **hybrid MPI/OpenMP** approach, which means I used both shared and distributed memory in the same code.
+For this exercise, I needed to make a parallel version of Conway's Game of Life and test how well it works when I change the conditions. The assignment asked for a **hybrid MPI/OpenMP** approach, which means I used both shared and distributed memory in the same code.
 
-What I did was, I made an MPI version of the GOL where the work was shared equally between the processes. Each MPI process then created multiple OpenMP threads to get its work done faster. To see how well this scaled, I compiled and ran the program on ORFEO, which is a computer cluster at Area Science Park in Trieste.
+What I did was, I made an MPI version of the Game of Life where the work was shared equally between the processes. Each MPI process then created multiple OpenMP threads to get its work done faster. To see how well this scaled, I compiled and ran the program on ORFEO, which is a computer cluster at Area Science Park in Trieste.
 
 You can get more details about this task from [this document][link1] in the main course repository.
 
