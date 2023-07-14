@@ -24,15 +24,15 @@ size=25000
 datafile=$loc/timing.csv
 echo "threads_per_socket, ordered_mean, static_mean" > $datafile
 
-mpirun par_main.x -i -k $size -f "playground.pgm"
+mpirun main.x -i -k $size -f "playground.pgm"
 
 
 for th_socket in $(seq 1 1 12)
 do
 	export OMP_NUM_THREADS=$th_socket
 	echo -n "${th_socket}," >> $datafile
-	mpirun -np $processes --map-by socket par_main.x -r -f "playground.pgm" -e 0 -n 5 -s 0 -k $size
-	mpirun -np $processes --map-by socket par_main.x -r -f "playground.pgm" -e 1 -n 50 -s 0 -k $size
+	mpirun -np $processes --map-by socket main.x -r -f "playground.pgm" -e 0 -n 5 -s 0 -k $size
+	mpirun -np $processes --map-by socket main.x -r -f "playground.pgm" -e 1 -n 50 -s 0 -k $size
 done
 
 

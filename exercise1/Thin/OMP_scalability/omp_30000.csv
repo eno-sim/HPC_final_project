@@ -1,4 +1,4 @@
- threads_per_socket, ordered_mean, static_mean
+threads_per_socket,ordered_mean,static_mean
 1,30.769442,14.874996
 2,30.779657,7.738069
 3,30.786582,5.336818

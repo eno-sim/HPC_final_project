@@ -9,9 +9,9 @@
 #include <omp.h>
 #include <getopt.h>
 #include <math.h>
-#include "mem_ordered_evolution.h"
+#include "ordered_evolution.h"
 #include "read_write_pgm.h"
-#include "mem_static_evolution.h"
+#include "static_evolution.h"
 
 //Implement utility functions:
 //You'll need to implement utility functions such as init_playground,
@@ -185,16 +185,14 @@ char *fname  = NULL;
 
 
 	   gettimeofday(&start_time, NULL);
-        
-
            static_evolution(playground_s, k, my_chunk, my_offset, n, s);
            MPI_Finalize();
 	  gettimeofday(&end_time, NULL);
 	  time_elapsed = (end_time.tv_sec - start_time.tv_sec) + 
                       (end_time.tv_usec - start_time.tv_usec) / 1e6;
 
-                 mean_time = time_elapsed / n;
-                 if (rank == 0) {
+          mean_time = time_elapsed / n;
+          if (rank == 0) {
                      FILE *fp = fopen("timing.csv", "a");
                      fprintf(fp, "%f\n", mean_time);
                      fclose(fp);

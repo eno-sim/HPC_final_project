@@ -151,7 +151,7 @@ void * init_playground(int xsize, int ysize)
     return (void *)image;
 }
 
-void write_snapshot(unsigned char * playground, int maxval, int xsize, int ysize, const char *basename, int iteration)
+void ser_write_snapshot(unsigned char * playground, int maxval, int xsize, int ysize, const char *basename, int iteration)
 {
     char filename[256];
     snprintf(filename, sizeof(filename), "%s_%05d.pgm", basename, iteration);
@@ -264,7 +264,7 @@ void parallel_write_pgm_image(void *image, int maxval, int xsize, int my_chunk, 
 }
 
 
-void par_write_snapshot(unsigned char *playground, int maxval, int xsize, int ysize, const char *basename, int iteration, int offset)
+void write_snapshot(unsigned char *playground, int maxval, int xsize, int ysize, const char *basename, int iteration, int offset)
 {
     char filename[256];
     snprintf(filename, sizeof(filename), "%s_%05d.pgm", basename, iteration);

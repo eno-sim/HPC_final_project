@@ -123,7 +123,7 @@ void static_evolution(unsigned char *local_playground, int xsize, int my_chunk, 
  	free(updated_playground); 
      
         if(step % s == 0){
-             par_write_snapshot(local_playground, 255, xsize, my_chunk, "ssnapshot", step, my_offset); //CHECK IT!!!!
+             write_snapshot(local_playground, 255, xsize, my_chunk, "ssnapshot", step, my_offset); //CHECK IT!!!!
             	 }
 
    }
@@ -136,7 +136,7 @@ void static_evolution(unsigned char *local_playground, int xsize, int my_chunk, 
 
 
  if(s != n){
-   par_write_snapshot(local_playground, 255, xsize, my_chunk, "ssnapshot", n, my_offset);
+   write_snapshot(local_playground, 255, xsize, my_chunk, "ssnapshot", n, my_offset);
  
 }
 

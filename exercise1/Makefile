@@ -4,32 +4,25 @@ OBJDIR=obj
 INCDIR=include
 
 RW=$(OBJDIR)/read_write_pgm.o
-STATIC= $(OBJDIR)/mem_static_evolution.o
-ORDERED= $(OBJDIR)/mem_ordered_evolution.o
-OBJECTS=par_main.o $(RW) $(STATIC) $(ORDERED)
-
-# all: $(loc)/par_main.x $(loc)/main.x 
-par: $(loc)/par_main.x
-#ser: $(loc)/main.x
+STATIC= $(OBJDIR)/static_evolution.o
+ORDERED= $(OBJDIR)/ordered_evolution.o
+OBJECTS=main.o $(RW) $(STATIC) $(ORDERED)
 
 
-#$(loc)/main.x: $(OBJECTS)
-#	$(CC) -lm $(OBJECTS) -o $@
+par: $(loc)/main.x
 
-#main.o: main.c 
-#	$(CC) -c main.c
 
-$(loc)/par_main.x: $(OBJECTS)
+$(loc)/main.x: $(OBJECTS)
 	$(CC) -lm $(OBJECTS) -o $@
 
-par_main.o: par_main.c
-	$(CC) -c par_main.c
+main.o: main.c
+	$(CC) -c main.c
 
 $(OBJDIR)/%.o: src/%.c $(INCDIR)/%.h
 	mkdir -p $(OBJDIR)
 	$(CC) -c $< -o $@
 
-clean: x_clean img_clean
+clean: x_clean clean_img
 
 x_clean:
 	rm -rf *.x $(OBJDIR)/*.o $(OBJDIR)/*.a 
