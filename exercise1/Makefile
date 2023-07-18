@@ -25,7 +25,7 @@ $(OBJDIR)/%.o: src/%.c $(INCDIR)/%.h
 clean: x_clean clean_img
 
 x_clean:
-	rm -rf *.x $(OBJDIR)/*.o $(OBJDIR)/*.a 
+	rm -rf $(loc)/*.x $(OBJDIR)/*.o $(OBJDIR)/*.a 
 
 clean_img:
-	rm ./*.pgm
+	rm $(loc)/*.pgm
