@@ -170,7 +170,7 @@ void ordered_evolution(unsigned char *local_playground, int xsize, int my_chunk,
         }
         
         MPI_Barrier(MPI_COMM_WORLD);
-        // Gather the local playgrounds back to the master process
+     
         if(step % s == 0) {
 
             write_snapshot(local_playground, 255, xsize, my_chunk, "osnapshot", step, offset);
