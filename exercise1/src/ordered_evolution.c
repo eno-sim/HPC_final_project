@@ -20,7 +20,7 @@ void update_cell_ordered(unsigned char *top_row, unsigned char *bottom_row,
         {
             if (i == 0 && j == 0)
                 continue;
-
+	    // compute the coordinates of each neighbor of cell (x,y)
             int nx = (x + i + xsize) % xsize;
             int ny = (y + j + ysize) % ysize;
 
